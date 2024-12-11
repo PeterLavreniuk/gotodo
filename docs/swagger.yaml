@@ -1,0 +1,159 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  gotodo.ErrorResponse:
+    properties:
+      message:
+        description: The error message
+        type: string
+    type: object
+  gotodo.NotFoundResponse:
+    properties:
+      id:
+        description: Id of the item not found
+        type: integer
+      message:
+        description: The error message
+        type: string
+    type: object
+  gotodo.ToDoItem:
+    properties:
+      description:
+        description: The description of the note
+        type: string
+      id:
+        description: The unique id of the note
+        type: integer
+      title:
+        description: The title of the note
+        type: string
+    type: object
+  gotodo.ToDoItemRequest:
+    properties:
+      description:
+        description: The author of the blog
+        type: string
+      title:
+        description: The author of the blog
+        type: string
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact: {}
+  description: This is a simple typical todo list Go project
+  title: GOTODO Api
+  version: "0.1"
+paths:
+  /:
+    get:
+      operationId: get-all-todoitems
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/gotodo.ToDoItem'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gotodo.ErrorResponse'
+      summary: GetAll returns all existing notes
+    post:
+      operationId: create-todoitem
+      parameters:
+      - description: note
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/gotodo.ToDoItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gotodo.ToDoItem'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gotodo.ErrorResponse'
+      summary: Create a new note and returns it
+  /{id}:
+    delete:
+      operationId: delete-todoitem
+      parameters:
+      - description: note id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gotodo.ToDoItem'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gotodo.NotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gotodo.ErrorResponse'
+      summary: Deletes a note by its id
+    get:
+      operationId: get-todoitem
+      parameters:
+      - description: note id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gotodo.ToDoItem'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gotodo.ErrorResponse'
+      summary: Get returns a note by its id
+    put:
+      operationId: update-todoitem
+      parameters:
+      - description: note
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/gotodo.ToDoItemRequest'
+      - description: note id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gotodo.ToDoItem'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gotodo.ErrorResponse'
+      summary: Updates a note by its id
+produces:
+- application/json
+swagger: "2.0"

@@ -1,0 +1,7 @@
+{
+    "MySql":{
+        "DatabaseName" : "gotododb",
+	    "UserName" :     "",
+	    "Password" :     ""
+    }
+}
